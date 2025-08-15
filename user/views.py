@@ -36,7 +36,7 @@ PEOPLE = [
 def get_user(request, user_id):
     for person in PEOPLE:
         if person["id"] == user_id:
-            return JsonResponse(person)
+            return render(request, "user/detail.html", {"person": person})
     else:
         return HttpResponse("<h1 style='color:red'>Страница не найдено!</h1>")
 
@@ -44,28 +44,39 @@ def get_user(request, user_id):
 def get_all_users(request):
     return render(request, "user/list.html", {"people": PEOPLE})
 
+
 def add_user(request):
-    user_id = len(PEOPLE) + 1
-    person = {
-        "id": user_id,
-        "name": request.GET.get("name", "Unknown"),
-        "email": request.GET.get("email", "Unknown"),
-        "age": request.GET.get("age", 18),
-        "is_active": True
-    }
-    PEOPLE.append(person)
-    return JsonResponse(person)
+    if request.method == "POST":  # GET
+        user_id = len(PEOPLE) + 1
+        person = {
+            "id": user_id,
+            "name": request.POST.get("name", "unknown"),
+            "email": request.POST.get("email", "unknown"),
+            "age": int(request.POST.get("age", 18)),
+            "is_active": request.POST.get("is_active", True),
+        }
+        PEOPLE.append(person)
+        return JsonResponse(person)
+    return render(request, "user/create.html")
+
 
 def edit_user(request, user_id):
+    user: dict = {}
     for person in PEOPLE:
         if person["id"] == user_id:
-            person["name"] = request.GET.get("name", person["name"])
-            person["email"] = request.GET.get("email", person["email"])
-            person["age"] = request.GET.get("age", person["age"])
-            person["is_active"] = request.GET.get("is_active", person["is_active"])
-            return JsonResponse(person)
-    else:
-        return HttpResponse("<h1 style='color:red'>Страница не найдено!</h1>")
+            user = person
+            break
+    if user == {}:
+        return HttpResponse("<h1 style='color:red'>Пользователь не найдено!</h1>")
+    if request.method == "POST":
+        user['name'] = request.POST.get("name", user['name']),
+        user['email'] = request.POST.get("email", user['email']),
+        user['age'] = int(request.POST.get("age", user['age'])),
+        user['is_active'] = request.POST.get("is_active", user['is_active']),
+        PEOPLE.append(user)
+        return JsonResponse({"user": user})
+    return render(request, "user/edit.html", {"person": user})
+
 
 def delete_user(request, user_id):
     for person in PEOPLE:

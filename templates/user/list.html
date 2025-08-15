@@ -8,7 +8,7 @@
 <h1>Список всех пользователей</h1>
 <br><br>
 {% for person in people %}
-    {% if person.age > 24 %}
+    {% if person.age > 0 %}
     <h3>ID: {{ person.id }}</h3>
     <h3>Имя: {{ person.name }}</h3>
     <h3>Почта: {{ person.email }}</h3>
