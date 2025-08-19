@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Главная{% endblock title %}
+
+{% block content %}
+    <h2>Последние посты</h2>
+    <button type="submit"><a href="{% url 'post:post-create' %}">Создать пост</a></button>
+    <ul>
+        {% for post in posts %}
+            <li>
+            <a href="{% url 'post:post-detail' post.id %}">{{ post.title }}</a>
+            <small>Автор: {{ post.author.username }}</small>
+            </li>
+        {% empty %}
+            <li>Пока нет постов</li>
+        {% endfor %}
+    </ul>
+{% endblock content %}

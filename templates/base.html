@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Мой блог{% endblock title %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+<header>
+    <h1>
+        <a href="{% url 'home' %}">Мой блог</a>
+    </h1>
+    <nav>
+        <ul>
+            <li><a href="#">Пользователи</a></li>
+            <li><a href="{% url 'post:post-list' %}">Посты</a></li>
+            <li><a href="#">Курсы</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    {% block content %}
+    {% endblock content %}
+</main>
+
+<footer>
+    <p>2025 Мой Django блог</p>
+</footer>
+
+</body>
+</html>
