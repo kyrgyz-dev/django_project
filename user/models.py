@@ -6,7 +6,8 @@ class Profile(models.Model):
     user = models.OneToOneField(
         to=User,
         on_delete=models.CASCADE,
-        verbose_name="Пользователь"
+        verbose_name="Пользователь",
+        related_name='profile',
     )
     bio = models.TextField(
         max_length=500,
